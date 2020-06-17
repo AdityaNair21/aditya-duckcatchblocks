@@ -141,6 +141,9 @@ let player = sprites.create(img`
     . . . . . f f . . f f . . . . .
 `, SpriteKind.Player)
 
+info.setScore(0)
+info.startCountdown(10)
+
 controller.moveSprite(player)
 
 let duck = sprites.create(img`
@@ -166,4 +169,20 @@ duck.setPosition(Math.randomRange(0, scene.screenWidth()), Math.randomRange(0, s
 
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function () {
     duck.setPosition(Math.randomRange(0, scene.screenWidth()), Math.randomRange(0, scene.screenHeight()))
+    info.changeScoreBy(1)
+})
+
+game.onUpdate(function () {
+    if (player.x() < 0) {
+        player.setPosition(scene.screenWidth(), player.y())
+    }
+    if (player.x() > scene.screenWidth()) {
+        player.setPosition(0, player.y())
+    }
+    if (player.y() < 0) {
+        player.setPosition(player.x(), scene.screenHeight())
+    }
+    if (player.y() > scene.screenHeight()) {
+        player.setPosition(player.x(), 0)
+    }
 })
